@@ -6,8 +6,15 @@ class LoginPawn {
             button.onclick = () => this.login();
         }
         else if (localStorage.getItem('accessToken')) {
-            closePopup();
-            this.getEmail();
+            if(localStorage.getItem('accessToken')=="undefined")
+            {
+                localStorage.clear();
+                openPopup();
+            }
+            else{
+                closePopup();
+                this.getEmail();
+            }
         }
 
     }
@@ -82,13 +89,18 @@ class LoginPawn {
 
 }
 
-
+function openPopup() {
+    // Display the overlay and the popup
+    document.getElementById('overlay').style.display = 'block';
+    document.getElementById('popup').style.display = 'block';
+}
 
 function closePopup() {
     // Hide the overlay and the popup
     document.getElementById('overlay').style.display = 'none';
     document.getElementById('popup').style.display = 'none';
 }
+
 export default {
     modules: [
         {
