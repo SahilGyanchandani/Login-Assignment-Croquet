@@ -5,8 +5,9 @@ class LoginPawn {
             let button = document.getElementById('loginBtn');
             button.onclick = () => this.login();
         }
-        else {
+        else if (localStorage.getItem('accessToken')) {
             closePopup();
+            this.getEmail();
         }
 
     }
@@ -46,8 +47,7 @@ class LoginPawn {
                 }
                 else if (response.access_token) {
                     closePopup();
-                    const displayUsernameElement = document.getElementById('displayUsername');
-                    displayUsernameElement.innerHTML = `Welcome, ${username}!`;
+                    this.getEmail();
                 }
                 else if (response.status == 404) {
                     this.displayErrorMessage('Email Not Registered , Click on Register')
@@ -58,8 +58,31 @@ class LoginPawn {
             }
             );
     }
+    getEmail() {
+        let token = localStorage.getItem('accessToken')
+        const options = {
+            method: 'GET',
+            headers: {
+                accept: 'application/json',
+                'X-DE-SCOPE': '1689522389452804.DE_1689522389452807',
+                authorization: `Bearer ${token}`
+            }
+        };
+
+        fetch('https://api.beamable.com/basic/accounts/me', options)
+            .then(response => response.json())
+            .then(response => {
+                console.log(response)
+                let email = response.email
+                const displayUsernameElement = document.getElementById('displayUsername');
+                displayUsernameElement.innerHTML = `Welcome, ${email}!`;
+            })
+            .catch(err => console.error(err));
+    }
 
 }
+
+
 
 function closePopup() {
     // Hide the overlay and the popup
