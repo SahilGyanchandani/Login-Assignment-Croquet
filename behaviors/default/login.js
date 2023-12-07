@@ -1,8 +1,14 @@
 class LoginPawn {
 
     setup() {
-        let button = document.getElementById('loginBtn');
-        button.onclick = () => this.login();
+        if (!localStorage.getItem('accessToken')) {
+            let button = document.getElementById('loginBtn');
+            button.onclick = () => this.login();
+        }
+        else {
+            closePopup();
+        }
+
     }
 
     displayErrorMessage(message) {
