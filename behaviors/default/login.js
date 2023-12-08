@@ -10,6 +10,8 @@ class LoginPawn {
             {
                 localStorage.clear();
                 openPopup();
+                let button = document.getElementById('loginBtn');
+                button.onclick = () => this.login();
             }
             else{
                 closePopup();
